@@ -1,0 +1,210 @@
+{
+  "1": [
+    {
+      "id": "c1",
+      "author": "tptacek",
+      "time": "2 hours ago",
+      "text": "This is really impressive work. The inverted index implementation using a BTreeMap for term frequencies is elegant. One thing I'd push back on: at scale, you'd probably want to switch to a HNSW index for approximate nearest neighbor search rather than exact BM25. Have you benchmarked against Tantivy?",
+      "points": 87,
+      "replies": [
+        {
+          "id": "c1r1",
+          "author": "matklad",
+          "time": "1 hour ago",
+          "text": "Yes! I did benchmark against Tantivy briefly. My throughput is about 60% of Tantivy's on the BEIR benchmark, which I'm happy with for a first implementation. The goal was to understand the internals, not beat the state-of-the-art. The BTreeMap vs HashMap choice was deliberate — I wanted deterministic iteration order during merge.",
+          "points": 43,
+          "replies": [
+            {
+              "id": "c1r1r1",
+              "author": "burntsushi",
+              "time": "45 minutes ago",
+              "text": "For what it's worth, the regex-automata crate might help you accelerate phrase query matching significantly. It has very efficient multi-pattern search primitives. Happy to help if you want to explore that direction.",
+              "points": 29,
+              "replies": []
+            }
+          ]
+        },
+        {
+          "id": "c1r2",
+          "author": "jdh8",
+          "time": "1 hour ago",
+          "text": "Tantivy is incredible but the learning curve for contributing is steep. Good to see more Rust search engines appearing — competition drives quality.",
+          "points": 21,
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "author": "dang",
+      "time": "2 hours ago",
+      "text": "Flagging this as particularly interesting. The section on positional indexing and phrase queries is one of the clearest explanations I've read. Bookmarked.",
+      "points": 54,
+      "replies": [
+        {
+          "id": "c2r1",
+          "author": "pg",
+          "time": "90 minutes ago",
+          "text": "Agreed. The code is also unusually readable for systems code. The author clearly cares about communicating the ideas, not just getting it to compile.",
+          "points": 38,
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "author": "kaycebasques",
+      "time": "2 hours ago",
+      "text": "One thing that often gets overlooked in DIY search engines: the query parser is frequently more complex than the index itself. How did you handle boolean operators and parenthetical grouping? That's where my past attempts always fell apart.",
+      "points": 31,
+      "replies": [
+        {
+          "id": "c3r1",
+          "author": "matklad",
+          "time": "1 hour ago",
+          "text": "I punted on complex boolean for v1 and only support AND/OR at the top level. There's a follow-up post planned where I'll implement a proper Pratt parser for the query language. Honestly it's the most interesting part remaining.",
+          "points": 19,
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "c4",
+      "author": "xenodium",
+      "time": "3 hours ago",
+      "text": "What's the disk format for the index? I'm curious whether you went with a custom binary format or something like SQLite as the backing store.",
+      "points": 18,
+      "replies": []
+    },
+    {
+      "id": "c5",
+      "author": "eevee",
+      "time": "3 hours ago",
+      "text": "The real contribution here is showing that a working search engine is within the reach of a motivated individual in a few thousand lines. Most people assume it requires a team and years of work. Great demystification.",
+      "points": 45,
+      "replies": []
+    }
+  ],
+  "2": [
+    {
+      "id": "c6",
+      "author": "geofft",
+      "time": "3 hours ago",
+      "text": "The FrontierMath benchmark is interesting but I'd note that the tasks were specifically constructed to be hard for current models. Achieving human-level on a benchmark doesn't necessarily generalize to real mathematical research, where the hard part is choosing what to work on. Still impressive, but let's be careful about the headlines.",
+      "points": 134,
+      "replies": [
+        {
+          "id": "c6r1",
+          "author": "sama",
+          "time": "2 hours ago",
+          "text": "Fair pushback. We're not claiming this is AGI for math. The benchmark measures a specific slice of computational problem solving. We think it's a useful signal while acknowledging all benchmark limitations.",
+          "points": 67,
+          "replies": [
+            {
+              "id": "c6r1r1",
+              "author": "yudkowsky",
+              "time": "1 hour ago",
+              "text": "The distribution shift problem is real. When the model can influence which math problems get added to future benchmarks (through its outputs training future models), benchmark validity becomes circular. I remain cautious.",
+              "points": 89,
+              "replies": []
+            }
+          ]
+        },
+        {
+          "id": "c6r2",
+          "author": "teortaxesTex",
+          "time": "2 hours ago",
+          "text": "I've looked at FrontierMath problems carefully. Some of them are genuinely hard in a way that's qualitatively different from olympiad problems. If GPT-5 is really solving these consistently, that's a significant capability jump regardless of the benchmark concerns.",
+          "points": 45,
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "c7",
+      "author": "pmarca",
+      "time": "4 hours ago",
+      "text": "The economics of AI development are finally starting to make sense. The cost per useful output has dropped 10x in 18 months. The question is no longer 'can AI do X' but 'at what cost and accuracy.'",
+      "points": 78,
+      "replies": [
+        {
+          "id": "c7r1",
+          "author": "antirez",
+          "time": "3 hours ago",
+          "text": "Cost curves mattter, but I'm more interested in the reliability curve. A tool that's right 95% of the time can still be useless for tasks where you need 99.99% reliability. The error distribution matters more than the mean performance.",
+          "points": 56,
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "c8",
+      "author": "gwern",
+      "time": "4 hours ago",
+      "text": "Prediction from 3 years ago logged. This was always going to happen — scaling laws don't lie. The question now is what comes after human-level on this benchmark. My bets are on theorem proving being the next milestone.",
+      "points": 92,
+      "replies": []
+    }
+  ],
+  "4": [
+    {
+      "id": "c9",
+      "author": "patio11",
+      "time": "5 hours ago",
+      "text": "Queueing theory. The math behind why your app feels slow is almost never 'we need more CPU' — it's almost always that you've accidentally created a single-threaded bottleneck somewhere. Little's Law and the queue utilization formula (response time blows up as utilization approaches 100%) should be required reading.",
+      "points": 203,
+      "replies": [
+        {
+          "id": "c9r1",
+          "author": "thrwaway_cs",
+          "time": "4 hours ago",
+          "text": "This is the answer I was hoping for. Do you recommend any specific resources? I know of 'The Art of Computer Systems Performance Analysis' but it's quite old now.",
+          "points": 41,
+          "replies": [
+            {
+              "id": "c9r1r1",
+              "author": "patio11",
+              "time": "3 hours ago",
+              "text": "That book holds up remarkably well. Also 'Systems Performance' by Brendan Gregg for the practical side, and the USL (Universal Scalability Law) paper by Neil Gunther for the theory. The mathematics hasn't changed.",
+              "points": 67,
+              "replies": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c10",
+      "author": "garybernhardt",
+      "time": "5 hours ago",
+      "text": "Information theory. The connection between Shannon entropy, Kolmogorov complexity, and compression is one of the most beautiful results in all of computer science and it has practical implications for everything from database indexing to machine learning. Almost no undergrad programs teach this.",
+      "points": 178,
+      "replies": [
+        {
+          "id": "c10r1",
+          "author": "mrmrs",
+          "time": "4 hours ago",
+          "text": "This. And extending it: the rate-distortion tradeoff gives you a principled framework for thinking about any system that has to balance fidelity against cost. Most engineering intuition about caching, compression, and approximation algorithms is just informal rate-distortion thinking.",
+          "points": 89,
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "c11",
+      "author": "aphyr",
+      "time": "6 hours ago",
+      "text": "Formal verification and model checking. Not because every engineer needs to write TLA+ specs daily, but because the mental model of 'enumerate all possible states and check invariants' fundamentally changes how you reason about concurrent systems. Once you think this way, you see race conditions before you write them.",
+      "points": 156,
+      "replies": []
+    },
+    {
+      "id": "c12",
+      "author": "rsc",
+      "time": "6 hours ago",
+      "text": "Program derivation — the ability to start from a specification and mechanically transform it into an efficient implementation while preserving correctness. Dijkstra wrote about this extensively. Modern dependently-typed languages like Agda make this practical, but the ideas predate them by decades.",
+      "points": 134,
+      "replies": []
+    }
+  ]
+}
