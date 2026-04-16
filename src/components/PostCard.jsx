@@ -1,19 +1,37 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 export default function PostCard({ post, index }) {
   // Use index to calculate animation delay
   const delay = Math.min(index * 75, 500); // max delay 500ms
   
+  const [upvoted, setUpvoted] = useState(false);
+  const [points, setPoints] = useState(post.points || 0);
+
+  const handleVote = (e) => {
+    e.preventDefault();
+    if (upvoted) {
+      setPoints(points - 1);
+      setUpvoted(false);
+    } else {
+      setPoints(points + 1);
+      setUpvoted(true);
+    }
+  };
+
   return (
     <article 
       className="group bg-surface-container-lowest rounded-xl p-6 transition-all duration-500 hover:shadow-xl hover:-translate-y-1 border border-transparent hover:border-outline-variant/30 flex gap-6 opacity-0 animate-slide-up"
       style={{ animationDelay: `${delay}ms` }}
     >
       <div className="flex flex-col items-center gap-1 min-w-[40px]">
-        <button className="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container-high text-primary hover:bg-primary-fixed transition-colors active:animate-pop group/vote">
+        <button 
+          onClick={handleVote}
+          className={`w-10 h-10 flex items-center justify-center rounded-full transition-colors active:animate-pop group/vote ${upvoted ? 'bg-primary text-white' : 'bg-surface-container-high text-primary hover:bg-primary-fixed'}`}
+        >
           <span className="material-symbols-outlined group-hover/vote:-translate-y-0.5 transition-transform">expand_less</span>
         </button>
-        <span className="text-lg font-bold text-on-surface">{post.points || 0}</span>
+        <span className={`text-lg font-bold ${upvoted ? 'text-primary' : 'text-on-surface'}`}>{points}</span>
       </div>
       <div className="flex-1">
         <div className="flex items-center gap-2 mb-2">
